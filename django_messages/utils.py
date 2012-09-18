@@ -89,7 +89,7 @@ def new_message_email(sender, instance, signal,
                           data = session.get_decoded()
                           Uid = data.get('_auth_user_id', instance.recipient.pk)
                           uuser = User.objects.filter(id=Uid)
-                       urbanite_user = UrbaniteProfile.objects.filter(user__email=instance.recipient.email)
+                          urbanite_user = UrbaniteProfile.objects.filter(user__email=instance.recipient.email)
             if urbanite_user[0].send_mail_notification:
                    user_mail_notification = True
         except Exception, e:
