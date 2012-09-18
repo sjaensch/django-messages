@@ -1,13 +1,20 @@
 import re
 from django.utils.text import wrap
+from datetime import datetime
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.sites.models import Site
 from django.template import Context, loader
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User
+
+if 'urbanite.community' in settings.INSTALLED_APPS:
+    from urbanite.community.models import UrbaniteProfile
+else:
+    user_mail_notification = True    
 
 # favour django-mailer but fall back to django.core.mail
-
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
 else:
@@ -67,21 +74,39 @@ def new_message_email(sender, instance, signal,
         ``template_name``: the template to use
         ``subject_prefix``: prefix for the email subject.
         ``default_protocol``: default protocol in site URL passed to template
-    """
+    """    
+      
     if default_protocol is None:
         default_protocol = getattr(settings, 'DEFAULT_HTTP_PROTOCOL', 'http')
-
-    if 'created' in kwargs and kwargs['created']:
+    
+    if 'urbanite.community' in settings.INSTALLED_APPS:
         try:
-            current_domain = Site.objects.get_current().domain
-            subject = subject_prefix % {'subject': instance.subject}
-            message = render_to_string(template_name, {
+            sessions = Session.objects.filter(expire_date__gte=datetime.now())
+            if sessions.count() == 0:
+                   pass
+            else:   
+                   for session in sessions:
+                          data = session.get_decoded()
+                          Uid = data.get('_auth_user_id', instance.recipient.pk)
+                          uuser = User.objects.filter(id=Uid)
+                       urbanite_user = UrbaniteProfile.objects.filter(user__email=instance.recipient.email)
+            if urbanite_user[0].send_mail_notification:
+                   user_mail_notification = True
+        except Exception, e:
+            print e
+            pass 
+    
+    if user_mail_notification:
+        if 'created' in kwargs and kwargs['created']:
+            try:
+                current_domain = Site.objects.get_current().domain
+                subject = subject_prefix % {'subject': instance.subject}
+                message = render_to_string(template_name, {
                 'site_url': '%s://%s' % (default_protocol, current_domain),
                 'message': instance,
-            })
-            if instance.recipient.email != "":
-                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
+                })
+                if instance.recipient.email != "":
+                    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                     [instance.recipient.email,])
-        except Exception, e:
-            #print e
-            pass #fail silently
+            except Exception, e:
+                pass #fail silently
