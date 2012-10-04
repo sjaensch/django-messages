@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 
 if 'urbanite.community' in settings.INSTALLED_APPS:
     from urbanite.community.models import UrbaniteProfile
+    user_mail_notification = False
 else:
     user_mail_notification = True    
 
