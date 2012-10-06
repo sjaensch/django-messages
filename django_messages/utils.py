@@ -13,9 +13,9 @@ user_mail_notification = None
 
 if 'urbanite.community' in settings.INSTALLED_APPS:
     from urbanite.community.models import UrbaniteProfile
-    user_mail_notification = True
-else:
     user_mail_notification = False
+else:
+    user_mail_notification = True
 
 # favour django-mailer but fall back to django.core.mail
 if "mailer" in settings.INSTALLED_APPS:
@@ -92,7 +92,12 @@ def new_message_email(sender, instance, signal,
                           data = session.get_decoded()
                           Uid = data.get('_auth_user_id', instance.recipient.pk)
                           uuser = User.objects.filter(id=Uid)
-                          urbanite_user = UrbaniteProfile.objects.filter(user__email=instance.recipient.email)
+            try:
+                urbanite_user = UrbaniteProfile.objects.filter(user__email=instance.recipient.email)
+            except Exception, e:
+                print e
+                return True
+
             if urbanite_user[0].send_mail_notification:
                    user_mail_notification = True
         except Exception, e:
