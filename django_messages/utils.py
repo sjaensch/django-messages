@@ -9,11 +9,13 @@ from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 
+user_mail_notification = None
+
 if 'urbanite.community' in settings.INSTALLED_APPS:
     from urbanite.community.models import UrbaniteProfile
-    user_mail_notification = False
+    user_mail_notification = True
 else:
-    user_mail_notification = True    
+    user_mail_notification = False
 
 # favour django-mailer but fall back to django.core.mail
 if "mailer" in settings.INSTALLED_APPS:
