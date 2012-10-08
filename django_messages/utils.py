@@ -77,8 +77,9 @@ def new_message_email(sender, instance, signal,
         ``template_name``: the template to use
         ``subject_prefix``: prefix for the email subject.
         ``default_protocol``: default protocol in site URL passed to template
-    """    
-      
+    """
+    user_mail_notification = False
+
     if default_protocol is None:
         default_protocol = getattr(settings, 'DEFAULT_HTTP_PROTOCOL', 'http')
     
