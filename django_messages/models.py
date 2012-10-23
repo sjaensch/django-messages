@@ -1,4 +1,5 @@
 import datetime
+from django.utils import timezone
 from django.db import models
 from django.conf import settings
 from django.db.models import signals
@@ -80,7 +81,7 @@ class Message(models.Model):
     
     def save(self, **kwargs):
         if not self.id:
-            self.sent_at = datetime.datetime.now()
+            self.sent_at = timezone.now()
         super(Message, self).save(**kwargs) 
     
     class Meta:

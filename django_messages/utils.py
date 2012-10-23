@@ -1,6 +1,6 @@
 import re
 from django.utils.text import wrap
-from datetime import datetime
+from django.utils import timezone
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.sites.models import Site
 from django.template import Context, loader
@@ -85,7 +85,7 @@ def new_message_email(sender, instance, signal,
     
     if 'urbanite.community' in settings.INSTALLED_APPS:
         try:
-            sessions = Session.objects.filter(expire_date__gte=datetime.now())
+            sessions = Session.objects.filter(expire_date__gte=timezone.now())
             if sessions.count() == 0:
                    pass
             else:   
