@@ -145,6 +145,8 @@ def delete(request, message_id, success_url=None):
     deleted = False
     if success_url is None:
         success_url = reverse('messages_inbox')
+    if message.system_message == True:
+        return HttpResponseRedirect(success_url)
     if request.GET.has_key('next'):
         success_url = request.GET['next']
     if message.sender == user and message.system_message==False:
