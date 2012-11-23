@@ -147,10 +147,10 @@ def delete(request, message_id, success_url=None):
         success_url = reverse('messages_inbox')
     if request.GET.has_key('next'):
         success_url = request.GET['next']
-    if message.sender == user:
+    if message.sender == user and message.system_message==False:
         message.sender_deleted_at = now
         deleted = True
-    if message.recipient == user:
+    if message.recipient == user and message.system_message==False:
         message.recipient_deleted_at = now
         deleted = True
     if deleted:
