@@ -93,7 +93,7 @@ def compose(request, recipient=None, form_class=ComposeForm,
 compose = login_required(compose)
 
 def reply(request, message_id, form_class=ComposeForm,
-        template_name='django_messages/compose.html', success_url=None, 
+        template_name='django_messages/reply.html', success_url=None,
         recipient_filter=None, quote_helper=format_quote):
     """
     Prepares the ``form_class`` form for writing a reply to a given message
