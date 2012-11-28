@@ -118,7 +118,7 @@ def reply(request, message_id, form_class=ComposeForm,
             return HttpResponseRedirect(success_url)
     else:
         form = form_class(initial={
-            'body': quote_helper(parent.sender, parent.body),
+            'body': parent.body,
             'subject': _(u"Re: %(subject)s") % {'subject': parent.subject},
             'recipient': [parent.sender,]
             })
