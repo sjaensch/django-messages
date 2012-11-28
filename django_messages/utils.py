@@ -31,7 +31,7 @@ def format_quote(sender, body):
     """
     lines = wrap(body, 150).split('\n')
     for i, line in enumerate(lines):
-        lines[i] = "> %s" % line
+        lines[i] = " %s" % line
     quote = '\n'.join(lines)
     return ugettext(u"%(sender)s wrote:\n%(body)s") % {
         'sender': sender,
