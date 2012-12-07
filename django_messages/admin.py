@@ -81,7 +81,7 @@ class MessageAdmin(admin.ModelAdmin):
                 recipients_label = 'messages_reply_received'
                 
             # Notification for the sender.
-            notification.send([obj.sender], sender_label, {'message': obj,})
+            #notification.send([obj.sender], sender_label, {'message': obj,})
 
         if form.cleaned_data['group'] == 'all':
             # send to all users
@@ -102,6 +102,7 @@ class MessageAdmin(admin.ModelAdmin):
 
             if notification:
                 # Notification for the recipient.
-                notification.send([user], recipients_label, {'message' : obj,})
+                #notification.send([user], recipients_label, {'message' : obj,})
+                pass
             
-admin.site.register(Message, MessageAdmin)
+#admin.site.register(Message, MessageAdmin)
