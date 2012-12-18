@@ -86,14 +86,14 @@ def new_message_email(sender, instance, signal,
     
     if 'urbanite.community' in settings.INSTALLED_APPS:
         try:
-            sessions = Session.objects.filter(expire_date__gte=timezone.now())
-            if sessions.count() == 0:
-                   pass
-            else:   
-                   for session in sessions:
-                          data = session.get_decoded()
-                          Uid = data.get('_auth_user_id', instance.recipient.pk)
-                          uuser = User.objects.filter(id=Uid)
+            #sessions = Session.objects.filter(expire_date__gte=timezone.now())
+            #if sessions.count() == 0:
+            #       pass
+            #else:   
+            #       for session in sessions:
+            #              data = session.get_decoded()
+            #              Uid = data.get('_auth_user_id', instance.recipient.pk)
+            #              uuser = User.objects.filter(id=Uid)
             try:
                 urbanite_user = UrbaniteProfile.objects.filter(user__email=instance.recipient.email)
             except Exception, e:
