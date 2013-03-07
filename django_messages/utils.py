@@ -21,7 +21,7 @@ else:
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail
 else:
-    from django.core.mail import send_mail
+    from django.core.mail.message import EmailMessage
 
 def format_quote(sender, body):
     """
@@ -115,7 +115,9 @@ def new_message_email(sender, instance, signal,
                 'message': instance,
                 })
                 if instance.recipient.email != "":
-                    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
-                    [instance.recipient.email,],'text/html')
+                    message = EmailMessage(subject, message,
+                    to=(instance.recipient.email,), from_email=settings.DEFAULT_FROM_EMAIL)
+                    message.content_subtype = 'html'
+                    message.send()
             except Exception, e:
                 pass #fail silently
