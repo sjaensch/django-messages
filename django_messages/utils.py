@@ -115,8 +115,7 @@ def new_message_email(sender, instance, signal,
                 'message': instance,
                 })
                 if instance.recipient.email != "":
-                    instance.content_subtype = 'html'
                     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
-                    [instance.recipient.email,])
+                    [instance.recipient.email,],'text/html')
             except Exception, e:
                 pass #fail silently
