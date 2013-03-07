@@ -97,7 +97,6 @@ def new_message_email(sender, instance, signal,
             try:
                 urbanite_user = UrbaniteProfile.objects.filter(user__email=instance.recipient.email)
             except Exception, e:
-                print e
                 return True
 
             if urbanite_user[0].send_mail_notification:
@@ -116,6 +115,7 @@ def new_message_email(sender, instance, signal,
                 'message': instance,
                 })
                 if instance.recipient.email != "":
+                    instance.content_subtype = 'html'
                     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                     [instance.recipient.email,])
             except Exception, e:
