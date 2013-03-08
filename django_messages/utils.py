@@ -118,7 +118,10 @@ def new_message_email(sender, instance, signal,
 
                 soup = BeautifulSoup(message_body )
                 for img in soup.findAll('img'):
-                    img['src'] = 'http://'+current_domain+img['src']
+                    print img['src']
+                    img['src'] = "http://www.urbanite.net/"+img['src']
+                    print img['src']
+
                     message_body = str(soup)
 
                 message = render_to_string(template_name, {
