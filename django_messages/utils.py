@@ -1,4 +1,5 @@
 import re
+import str
 from django.utils.text import wrap
 from django.utils import timezone
 from django.utils.translation import ugettext, ugettext_lazy as _
@@ -111,11 +112,20 @@ def new_message_email(sender, instance, signal,
                 current_domain = Site.objects.get_current().domain
 
                 subject = subject_prefix % {'subject': instance.subject}
+                message_body = instance.body
+
+                from BeautifulSoup import BeautifulSoup
+
+                soup = BeautifulSoup(message_body )
+                for img in soup.findAll('img'):
+                    img['src'] = current_domain + img['src'][0]
+                    message_body = str(soup)
+
 
                 message = render_to_string(template_name, {
                 'site_url': '%s://%s' % (default_protocol, current_domain),
                 'message': instance,
-                'message_body':instance.body
+                'message_body':message_body
                 })
                 if instance.recipient.email != "":
                     message = EmailMessage(subject, message,
