@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
+from os.path import basename, splitext
 
 user_mail_notification = None
 
@@ -117,7 +118,7 @@ def new_message_email(sender, instance, signal,
 
                 soup = BeautifulSoup(message_body )
                 for img in soup.findAll('img'):
-                    img['src'] = current_domain + img['src'][0]
+                    img['src'] = current_domain + splitext(basename(img['src']))[0]
                     message_body = str(soup)
 
 
