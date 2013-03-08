@@ -1,5 +1,4 @@
 import re
-import str
 from django.utils.text import wrap
 from django.utils import timezone
 from django.utils.translation import ugettext, ugettext_lazy as _
