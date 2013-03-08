@@ -118,9 +118,8 @@ def new_message_email(sender, instance, signal,
 
                 soup = BeautifulSoup(message_body )
                 for img in soup.findAll('img'):
-                    img['src'] = current_domain + img['src'][0]
+                    img['src'] = 'http://'+current_domain + img['src'][0]
                     message_body = str(soup)
-
 
                 message = render_to_string(template_name, {
                 'site_url': '%s://%s' % (default_protocol, current_domain),
