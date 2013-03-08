@@ -118,9 +118,7 @@ def new_message_email(sender, instance, signal,
 
                 soup = BeautifulSoup(message_body )
                 for img in soup.findAll('img'):
-                    print img['src']
-                    img['src'] = "http://www.urbanite.net/"+img['src']
-                    print img['src']
+                    img['src'] = "http://www.urbanite.net"+img['src']
 
                     message_body = str(soup)
 
