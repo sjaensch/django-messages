@@ -109,10 +109,13 @@ def new_message_email(sender, instance, signal,
         if 'created' in kwargs and kwargs['created']:
             try:
                 current_domain = Site.objects.get_current().domain
+
                 subject = subject_prefix % {'subject': instance.subject}
+
                 message = render_to_string(template_name, {
                 'site_url': '%s://%s' % (default_protocol, current_domain),
                 'message': instance,
+                'message_body':instance.body
                 })
                 if instance.recipient.email != "":
                     message = EmailMessage(subject, message,
