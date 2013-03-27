@@ -1,7 +1,7 @@
 import datetime
 from django.utils import timezone
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -19,6 +19,9 @@ if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
 else:
     notification = None
+
+def home(request):
+    return redirect('messages_inbox')
 
 def inbox(request, template_name='django_messages/inbox.html'):
     """
