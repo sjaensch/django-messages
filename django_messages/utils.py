@@ -1,22 +1,10 @@
 import re
 from django.utils.text import wrap
-from django.utils import timezone
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.sites.models import Site
-from django.template import Context, loader
 from django.template.loader import render_to_string
 from django.conf import settings
-from django.contrib.sessions.models import Session
-from django.contrib.auth.models import User
-from os.path import basename, splitext
 
-user_mail_notification = None
-
-if 'urbanite.community' in settings.INSTALLED_APPS:
-    from urbanite.community.models import UrbaniteProfile
-    user_mail_notification = False
-else:
-    user_mail_notification = True
 
 # favour django-mailer but fall back to django.core.mail
 if "mailer" in settings.INSTALLED_APPS:
@@ -86,6 +74,7 @@ def new_message_email(sender, instance, signal,
         default_protocol = getattr(settings, 'DEFAULT_HTTP_PROTOCOL', 'http')
     
     if 'urbanite.community' in settings.INSTALLED_APPS:
+        from urbanite.community.models import UrbaniteProfile
         try:
             #sessions = Session.objects.filter(expire_date__gte=timezone.now())
             #if sessions.count() == 0:
