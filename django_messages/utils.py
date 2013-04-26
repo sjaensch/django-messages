@@ -76,14 +76,6 @@ def new_message_email(sender, instance, signal,
     if 'urbanite.community' in settings.INSTALLED_APPS:
         from urbanite.community.models import UrbaniteProfile
         try:
-            #sessions = Session.objects.filter(expire_date__gte=timezone.now())
-            #if sessions.count() == 0:
-            #       pass
-            #else:   
-            #       for session in sessions:
-            #              data = session.get_decoded()
-            #              Uid = data.get('_auth_user_id', instance.recipient.pk)
-            #              uuser = User.objects.filter(id=Uid)
             try:
                 urbanite_user = UrbaniteProfile.objects.filter(user__email=instance.recipient.email)
             except Exception, e:
@@ -110,8 +102,10 @@ def new_message_email(sender, instance, signal,
                     img['src'] = "http://www.urbanite.net"+img['src']
 
                     message_body = str(soup)
+                if instance.custom_template:
+                    template_name = instance.template_path
 
-                message = render_to_string(template_name, {
+                mesage = render_to_string(template_name, {
                 'site_url': '%s://%s' % (default_protocol, current_domain),
                 'message': instance,
                 'message_body':message_body

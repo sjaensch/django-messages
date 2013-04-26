@@ -57,7 +57,9 @@ class Message(models.Model):
     replied_at = models.DateTimeField(_("replied at"), null=True, blank=True)
     sender_deleted_at = models.DateTimeField(_("Sender deleted at"), null=True, blank=True)
     recipient_deleted_at = models.DateTimeField(_("Recipient deleted at"), null=True, blank=True)
-    system_message = models.BooleanField(_('system_message'),default=False)
+    system_message = models.BooleanField(_('system_message'), default=False)
+    custom_template = models.BooleanField(_('custom_template'), default=False)
+    template_path = models.CharField(_("template_path"), max_length=255, null=True, blank=True)
     objects = MessageManager()
     
     def new(self):
