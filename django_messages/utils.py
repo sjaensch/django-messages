@@ -102,8 +102,6 @@ def new_message_email(sender, instance, signal,
                     img['src'] = "http://www.urbanite.net"+img['src']
 
                     message_body = str(soup)
-                if instance.custom_template:
-                    template_name = instance.template_path
 
                 mesage = render_to_string(template_name, {
                 'site_url': '%s://%s' % (default_protocol, current_domain),
