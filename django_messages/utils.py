@@ -103,7 +103,7 @@ def new_message_email(sender, instance, signal,
 
                     message_body = str(soup)
 
-                mesage = render_to_string(template_name, {
+                message = render_to_string(template_name, {
                 'site_url': '%s://%s' % (default_protocol, current_domain),
                 'message': instance,
                 'message_body':message_body
