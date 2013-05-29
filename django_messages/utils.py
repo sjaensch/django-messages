@@ -84,10 +84,9 @@ def new_message_email(sender, instance, signal,
             if urbanite_user[0].send_mail_notification:
                    user_mail_notification = True
         except Exception, e:
-            print e
             pass 
     
-    if user_mail_notification:
+    if user_mail_notification :
         if 'created' in kwargs and kwargs['created']:
             try:
                 current_domain = Site.objects.get_current().domain
@@ -103,11 +102,15 @@ def new_message_email(sender, instance, signal,
 
                     message_body = str(soup)
 
+                if instance.system_message:
+                    template_name = 'django_messages/new_system_message.html'
+
                 message = render_to_string(template_name, {
                 'site_url': '%s://%s' % (default_protocol, current_domain),
                 'message': instance,
                 'message_body':message_body
                 })
+
                 if instance.recipient.email != "":
                     message = EmailMessage(subject, message,
                     to=(instance.recipient.email,), from_email=settings.DEFAULT_FROM_EMAIL)
